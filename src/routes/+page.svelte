@@ -10,7 +10,7 @@
 <ul>
 	{#each await get_photos(page_num) as photo (photo.id)}
 		<li>
-			<a href={resolve('/[id]', { id: photo.id })}>
+			<a class="photos" href={resolve('/[id]', { id: photo.id })}>
 				<Polaroid
 					id={photo.id}
 					src={photo.url}
@@ -68,6 +68,9 @@
 		& > * {
 			display: grid;
 			place-items: center;
+		}
+		.photos {
+			display: grid;
 		}
 	}
 	footer {
