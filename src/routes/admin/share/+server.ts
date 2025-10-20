@@ -1,7 +1,9 @@
 import { upload_file } from '$lib/server/uploadthing/upload-file.js';
+import { check_auth } from '$lib/utils.js';
 import { redirect } from '@sveltejs/kit';
 
 export async function POST({ request }) {
+	await check_auth();
 	const form_data = await request.formData();
 	const file = form_data.get('photo');
 
