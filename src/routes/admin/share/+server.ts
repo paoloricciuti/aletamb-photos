@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 export async function POST({ request }) {
 	await check_auth();
 	const form_data = await request.formData();
-	const file = form_data.get('photo');
+	const file = form_data.get('photo[]');
 
 	if (file instanceof File === false) {
 		return new Response('File non valido', { status: 400 });
