@@ -1,0 +1,14 @@
+@view-transition {
+	navigation: auto;
+}
+
+html {
+	--bg-light: #fff6f1;
+	--bg-dark: #ffe1d1;
+	--accent: #a5747d;
+	font-family: 'Cedarville Cursive', cursive;
+	background-image: linear-gradient(45deg, var(--bg-light), var(--bg-dark));
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	color: #111;
+}
