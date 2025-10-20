@@ -15,6 +15,7 @@ export async function POST({ request }) {
 		const uploaded_file = await upload_file(file);
 		redirect(302, `/admin/edit/${uploaded_file.id}`);
 	} catch (e) {
+		console.error(e);
 		return new Response((e as Error).message, { status: 500 });
 	}
 }
