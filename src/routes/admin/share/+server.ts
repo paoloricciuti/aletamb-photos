@@ -1,6 +1,6 @@
 import { upload_file } from '$lib/server/uploadthing/upload-file.js';
 import { check_auth } from '$lib/utils.js';
-import { redirect } from '@sveltejs/kit';
+import { isRedirect, redirect } from '@sveltejs/kit';
 
 export async function POST({ request }) {
 	await check_auth();
@@ -15,7 +15,9 @@ export async function POST({ request }) {
 		const uploaded_file = await upload_file(file);
 		redirect(302, `/admin/edit/${uploaded_file.id}`);
 	} catch (e) {
-		console.error(e);
+		if (isRedirect(e)) {
+			throw e;
+		}
 		return new Response((e as Error).message, { status: 500 });
 	}
 }
