@@ -2,11 +2,13 @@
 	import { login } from '$lib/auth.remote';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
+	import Issues from '$lib/components/Issues.svelte';
 </script>
 
 <main>
 	<h1>Login</h1>
 	<form {...login}>
+		<Issues form={login} />
 		<label>
 			Password:
 			<Input {...login.fields.password.as('password')} />

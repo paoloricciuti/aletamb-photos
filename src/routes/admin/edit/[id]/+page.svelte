@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
+	import Issues from '$lib/components/Issues.svelte';
 	import { edit_photo, get_photo } from '$lib/photos.remote.js';
 	import { untrack } from 'svelte';
 
@@ -29,6 +30,7 @@
 <h1>Modifica foto</h1>
 
 <form {...edit_photo} enctype="multipart/form-data">
+	<Issues form={edit_photo} />
 	<img
 		src={photo.url}
 		style="view-transition-name: img-{photo.id}"

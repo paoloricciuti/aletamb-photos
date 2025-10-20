@@ -3,6 +3,7 @@
 	import { add_password, logout } from '$lib/auth.remote';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
+	import Issues from '$lib/components/Issues.svelte';
 	import { delete_photo, get_all_photos, upload_photo } from '$lib/photos.remote.js';
 </script>
 
@@ -10,6 +11,7 @@
 <main>
 	<h2>Carica nuova foto</h2>
 	<form {...upload_photo} enctype="multipart/form-data">
+		<Issues form={upload_photo} />
 		<label>
 			File
 			<Input {...upload_photo.fields.file.as('file')} accept="image/*" />
@@ -63,6 +65,7 @@
 	<h2>Aggiungi password</h2>
 
 	<form {...add_password} enctype="multipart/form-data">
+		<Issues form={add_password} />
 		<label>
 			Nuova Password
 			<Input {...add_password.fields.password.as('password')} />

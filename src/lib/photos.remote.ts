@@ -62,7 +62,7 @@ export const delete_photo = form(
 export const edit_photo = form(
 	v.object({
 		id: v.string(),
-		title: v.string(),
+		title: v.pipe(v.string(), v.minLength(1)),
 		description: v.optional(v.string()),
 	}),
 	async ({ id, description, title }, invalid) => {
@@ -82,7 +82,11 @@ export const edit_photo = form(
 );
 
 export const upload_photo = form(
-	v.object({ file: v.file(), title: v.string(), description: v.optional(v.string()) }),
+	v.object({
+		file: v.file(),
+		title: v.pipe(v.string(), v.minLength(1)),
+		description: v.optional(v.string()),
+	}),
 	async ({ file, description, title }, invalid) => {
 		try {
 			await upload_file(file, title, description);

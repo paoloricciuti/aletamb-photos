@@ -40,7 +40,7 @@ export const login = form(
 
 export const add_password = form(
 	v.object({
-		password: v.string(),
+		password: v.pipe(v.string(), v.minLength(8)),
 	}),
 	async ({ password }, invalid) => {
 		await check_auth();
