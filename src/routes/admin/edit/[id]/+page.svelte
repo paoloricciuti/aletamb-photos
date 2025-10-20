@@ -7,11 +7,11 @@
 
 	let { params } = $props();
 
-	const photo = $derived(await get_photo({ id: params.id, admin: true }));
+	const photo = $derived(await get_photo(params.id));
 
 	function set_values() {
-		if ('title' in photo) edit_photo.fields.title.set(photo.title);
-		if ('description' in photo) edit_photo.fields.description.set(photo.description ?? '');
+		edit_photo.fields.title.set(photo.title ?? '');
+		edit_photo.fields.description.set(photo.description ?? '');
 	}
 
 	if (!browser) {

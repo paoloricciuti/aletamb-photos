@@ -1,9 +1,9 @@
 import { form, query } from '$app/server';
 import { db } from '$lib/server/db';
-import { photos, shared_photos, type Photo, type SharedPhoto } from '$lib/server/db/schema';
+import { photos } from '$lib/server/db/schema';
 import { utapi } from '$lib/server/uploadthing';
 import { redirect } from '@sveltejs/kit';
-import { count, eq } from 'drizzle-orm';
+import { count, eq, isNotNull } from 'drizzle-orm';
 import * as v from 'valibot';
 import { upload_file } from './server/uploadthing/upload-file.js';
 import { check_auth } from './utils';
@@ -19,6 +19,7 @@ export const get_photos = query(v.number(), async (page) => {
 	const page_photos = await db
 		.select()
 		.from(photos)
+		.where(isNotNull(photos.title))
 		.limit(page_size)
 		.offset(page * page_size);
 	return page_photos;
@@ -30,25 +31,13 @@ export const get_all_photos = query(async () => {
 	return page_photos;
 });
 
-export const get_photo = query(
-	v.object({ id: v.string(), admin: v.optional(v.boolean()) }),
-	async ({ id, admin }) => {
-		let photo: (Photo | SharedPhoto) | undefined = await db
-			.select()
-			.from(photos)
-			.where(eq(photos.id, id))
-			.get();
-		if (!photo) {
-			if (admin) {
-				photo = await db.select().from(shared_photos).where(eq(shared_photos.id, id)).get();
-			}
-			if (!photo) {
-				redirect(302, '/');
-			}
-		}
-		return photo;
-	},
-);
+export const get_photo = query(v.string(), async (id) => {
+	const photo = await db.select().from(photos).where(eq(photos.id, id)).get();
+	if (photo == null || photo.title == null) {
+		redirect(302, '/');
+	}
+	return photo;
+});
 
 export const delete_photo = form(
 	v.object({ id: v.string(), key: v.string() }),
@@ -68,7 +57,11 @@ export const delete_photo = form(
 );
 
 export const edit_photo = form(
-	v.object({ id: v.string(), title: v.string(), description: v.optional(v.string()) }),
+	v.object({
+		id: v.string(),
+		title: v.string(),
+		description: v.optional(v.string()),
+	}),
 	async ({ id, description, title }, invalid) => {
 		try {
 			await db

@@ -5,18 +5,8 @@ export const photos = sqliteTable('photos', {
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	key: text('key').notNull(),
-	title: text('title').notNull(),
+	title: text('title'),
 	description: text('description'),
-	url: text('url').notNull(),
-	width: integer('width').notNull(),
-	height: integer('height').notNull(),
-});
-
-export const shared_photos = sqliteTable('shared_photos', {
-	id: text('id')
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	key: text('key').notNull(),
 	url: text('url').notNull(),
 	width: integer('width').notNull(),
 	height: integer('height').notNull(),
@@ -35,6 +25,3 @@ export const sessions = sqliteTable('sessions', {
 		.$defaultFn(() => crypto.randomUUID()),
 	secret: blob({ mode: 'buffer' }).notNull().$type<ArrayBuffer>(),
 });
-
-export type Photo = typeof photos.$inferSelect;
-export type SharedPhoto = typeof shared_photos.$inferSelect;

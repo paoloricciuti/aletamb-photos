@@ -1,11 +1,10 @@
 <script lang="ts">
 	import Polaroid from '$lib/components/Polaroid.svelte';
 	import { get_photo } from '$lib/photos.remote.js';
-	import type { Photo } from '$lib/server/db/schema.js';
 
 	let { params } = $props();
 
-	let photo = $derived((await get_photo({ id: params.id, admin: false })) as Photo);
+	let photo = $derived(await get_photo(params.id));
 </script>
 
 <main>

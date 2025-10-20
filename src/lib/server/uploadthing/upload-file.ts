@@ -1,7 +1,7 @@
 import imageSize from 'image-size';
 import { utapi } from './index.js';
 import { db } from '../db/index.js';
-import { photos, shared_photos } from '../db/schema.js';
+import { photos } from '../db/schema.js';
 
 export async function upload_file(file: File, title?: string, description?: string) {
 	// Handle the uploaded file here
@@ -19,31 +19,15 @@ export async function upload_file(file: File, title?: string, description?: stri
 
 	const url = ret[0].data.ufsUrl;
 
-	if (title != null) {
-		try {
-			return await db
-				.insert(photos)
-				.values({
-					width: meta.width ?? 0,
-					height: meta.height ?? 0,
-					title,
-					url,
-					description,
-					key: ret[0].data.key,
-				})
-				.returning()
-				.then(([photo]) => photo);
-		} catch {
-			throw new Error('Impossibile salvare la foto');
-		}
-	}
 	try {
 		return await db
-			.insert(shared_photos)
+			.insert(photos)
 			.values({
 				width: meta.width ?? 0,
 				height: meta.height ?? 0,
+				title,
 				url,
+				description,
 				key: ret[0].data.key,
 			})
 			.returning()
