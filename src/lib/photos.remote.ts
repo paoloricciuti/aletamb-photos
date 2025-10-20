@@ -40,7 +40,7 @@ export const get_photo = query(
 			.get();
 		if (!photo) {
 			if (admin) {
-				photo = await db.select().from(shared_photos).where(eq(photos.id, id)).get();
+				photo = await db.select().from(shared_photos).where(eq(shared_photos.id, id)).get();
 			}
 			if (!photo) {
 				redirect(302, '/');
