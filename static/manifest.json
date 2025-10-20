@@ -14,10 +14,10 @@
 		"method": "POST",
 		"enctype": "application/x-www-form-urlencoded",
 		"params": {
-			"file": {
+			"files": [{
 				"name": "photo",
-				"accept": "image/*"
-			}
+				"accept": ["image/*"]
+			}]
 		}
 	},
 	"orientation": "any",
