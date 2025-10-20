@@ -1,0 +1,33 @@
+{
+	"theme_color": "#fff6f1",
+	"background_color": "#fff6f1",
+	"icons": [
+		{
+			"purpose": "any",
+			"sizes": "512x512",
+			"src": "icon.png",
+			"type": "image/png"
+		}
+	],
+	"share_target": {
+		"action": "/admin/share",
+		"method": "POST",
+		"enctype": "application/x-www-form-urlencoded",
+		"params": {
+			"file": {
+				"name": "photo",
+				"accept": "image/*"
+			}
+		}
+	},
+	"orientation": "any",
+	"display": "standalone",
+	"dir": "auto",
+	"lang": "it-IT",
+	"name": "aletamb photos",
+	"short_name": "aletamb photos",
+	"start_url": "/",
+	"scope": "/",
+	"description": "Aletamb photo gallery",
+	"id": "aletamb-photos"
+}

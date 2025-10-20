@@ -1,11 +1,11 @@
 import { form, query } from '$app/server';
-import * as v from 'valibot';
-import { imageSize } from 'image-size';
-import { utapi } from '$lib/server/uploadthing';
 import { db } from '$lib/server/db';
-import { photos } from '$lib/server/db/schema';
-import { count, eq } from 'drizzle-orm';
+import { photos, shared_photos, type Photo, type SharedPhoto } from '$lib/server/db/schema';
+import { utapi } from '$lib/server/uploadthing';
 import { redirect } from '@sveltejs/kit';
+import { count, eq } from 'drizzle-orm';
+import * as v from 'valibot';
+import { upload_file } from './server/uploadthing/upload-file.js';
 import { check_auth } from './utils';
 
 const page_size = 10;
@@ -30,13 +30,25 @@ export const get_all_photos = query(async () => {
 	return page_photos;
 });
 
-export const get_photo = query(v.string(), async (id) => {
-	const photo = await db.select().from(photos).where(eq(photos.id, id)).get();
-	if (!photo) {
-		redirect(302, '/');
-	}
-	return photo;
-});
+export const get_photo = query(
+	v.object({ id: v.string(), admin: v.optional(v.boolean()) }),
+	async ({ id, admin }) => {
+		let photo: (Photo | SharedPhoto) | undefined = await db
+			.select()
+			.from(photos)
+			.where(eq(photos.id, id))
+			.get();
+		if (!photo) {
+			if (admin) {
+				photo = await db.select().from(shared_photos).where(eq(photos.id, id)).get();
+			}
+			if (!photo) {
+				redirect(302, '/');
+			}
+		}
+		return photo;
+	},
+);
 
 export const delete_photo = form(
 	v.object({ id: v.string(), key: v.string() }),
@@ -76,32 +88,10 @@ export const edit_photo = form(
 export const upload_photo = form(
 	v.object({ file: v.file(), title: v.string(), description: v.optional(v.string()) }),
 	async ({ file, description, title }, invalid) => {
-		// Handle the uploaded file here
-		const meta = await imageSize(await file.bytes());
-
-		if (!meta.width || !meta.height) {
-			return invalid.file('Impossibile recuperare dimensioni della foto');
-		}
-
-		const ret = await utapi.uploadFiles([file]);
-
-		if (ret[0].error) {
-			return invalid.file('Uploading error: ' + ret[0].error.message);
-		}
-
-		const url = ret[0].data.ufsUrl;
-
 		try {
-			await db.insert(photos).values({
-				width: meta.width ?? 0,
-				height: meta.height ?? 0,
-				title,
-				url,
-				description,
-				key: ret[0].data.key,
-			});
-		} catch {
-			return invalid('Impossibile salvare la foto');
+			await upload_file(file, title, description);
+		} catch (e) {
+			return invalid((e as Error).message);
 		}
 	},
 );

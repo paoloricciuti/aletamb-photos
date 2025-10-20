@@ -7,11 +7,11 @@
 
 	let { params } = $props();
 
-	const photo = $derived(await get_photo(params.id));
+	const photo = $derived(await get_photo({ id: params.id, admin: true }));
 
 	function set_values() {
-		edit_photo.fields.title.set(photo.title);
-		edit_photo.fields.description.set(photo.description ?? '');
+		if ('title' in photo) edit_photo.fields.title.set(photo.title);
+		if ('description' in photo) edit_photo.fields.description.set(photo.description ?? '');
 	}
 
 	if (!browser) {
@@ -29,7 +29,11 @@
 <h1>Modifica foto</h1>
 
 <form {...edit_photo} enctype="multipart/form-data">
-	<img src={photo.url} style="view-transition-name: img-{photo.id}" alt={photo.description} />
+	<img
+		src={photo.url}
+		style="view-transition-name: img-{photo.id}"
+		alt={'description' in photo ? photo.description : 'No description yet'}
+	/>
 	<input {...edit_photo.fields.id.as('hidden', photo.id)} />
 	<label>
 		Titolo

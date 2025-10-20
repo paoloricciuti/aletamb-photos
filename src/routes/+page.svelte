@@ -64,7 +64,7 @@
 		display: grid;
 		padding: 2.5rem;
 		gap: 5rem;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(400px, 90%), 1fr));
 		& > * {
 			display: grid;
 			place-items: center;

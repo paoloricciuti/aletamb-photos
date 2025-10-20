@@ -49,7 +49,7 @@
 <style>
 	.polaroid {
 		position: relative;
-		width: 300px;
+		width: min(300px, 90%);
 		aspect-ratio: var(--aspect-ratio);
 		background: white;
 		padding: 1rem 1rem 3rem 1rem;
