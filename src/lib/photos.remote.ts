@@ -1,6 +1,6 @@
 import { form, query } from '$app/server';
 import * as v from 'valibot';
-import sharp from 'sharp';
+import { imageSize } from 'image-size';
 import { utapi } from '$lib/server/uploadthing';
 import { db } from '$lib/server/db';
 import { photos } from '$lib/server/db/schema';
@@ -72,7 +72,7 @@ export const upload_photo = form(
 	v.object({ file: v.file(), title: v.string(), description: v.optional(v.string()) }),
 	async ({ file, description, title }, invalid) => {
 		// Handle the uploaded file here
-		const meta = await sharp(await file.bytes()).metadata();
+		const meta = await imageSize(await file.bytes());
 
 		if (!meta.width || !meta.height) {
 			return invalid.file('Impossibile recuperare dimensioni della foto');
