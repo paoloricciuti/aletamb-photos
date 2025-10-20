@@ -42,7 +42,6 @@
 	},
 	"dependencies": {
 		"@fontsource/cedarville-cursive": "^5.2.7",
-		"@standard-schema/spec": "^1.0.0",
 		"@uploadthing/svelte": "^7.3.3",
 		"image-size": "^2.0.2",
 		"uploadthing": "^7.7.4",

@@ -11,9 +11,6 @@ importers:
       '@fontsource/cedarville-cursive':
         specifier: ^5.2.7
         version: 5.2.7
-      '@standard-schema/spec':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@uploadthing/svelte':
         specifier: ^7.3.3
         version: 7.3.3(svelte@5.41.0)(uploadthing@7.7.4)
