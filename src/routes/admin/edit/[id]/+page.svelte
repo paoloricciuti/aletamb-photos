@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import { edit_photo, get_photo } from '$lib/photos.remote.js';
@@ -8,11 +9,19 @@
 
 	const photo = $derived(await get_photo(params.id));
 
+	function set_values() {
+		edit_photo.fields.title.set(photo.title);
+		edit_photo.fields.description.set(photo.description ?? '');
+	}
+
+	if (!browser) {
+		set_values();
+	}
+
 	$effect.pre(() => {
 		void params.id;
 		untrack(() => {
-			edit_photo.fields.title.set(photo.title);
-			edit_photo.fields.description.set(photo.description ?? '');
+			set_values();
 		});
 	});
 </script>
@@ -40,5 +49,7 @@
 	form {
 		display: grid;
 		gap: 2rem;
+		max-width: 40rem;
+		margin: auto;
 	}
 </style>

@@ -2,6 +2,7 @@
 	import '@fontsource/cedarville-cursive';
 	import { onNavigate } from '$app/navigation';
 	import favicon from '$lib/assets/aletamb.png';
+	import logo from '$lib/assets/aletamb.svg';
 	import '../app.css';
 	import { resolve } from '$app/paths';
 	let { children } = $props();
@@ -24,16 +25,10 @@
 
 <header>
 	<a title="Home" href={resolve('/')}
-		><svg height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-			><g fill="none" stroke="#111" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-				><path d="M5 12H3l9-9l9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" /><path
-					d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"
-				/></g
-			></svg
-		></a
+		><img style:height="48px" src={logo} alt="aletamb photos logo" /></a
 	>
 	<h1>aletamb photos</h1>
-	<a title="Home" href={resolve('/admin')}
+	<a title="Home" data-sveltekit-reload href={resolve('/admin')}
 		><svg height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
 			><path
 				fill="none"

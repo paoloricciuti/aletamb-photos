@@ -34,7 +34,7 @@
 					{photo.title}
 				</a>
 				<form
-					{...delete_photo.enhance(async ({ submit }) => {
+					{...delete_photo.for(photo.id).enhance(async ({ submit }) => {
 						const confirmed = confirm('Sicura di voler cancellare la foto?');
 						if (confirmed) {
 							await submit();
@@ -77,6 +77,10 @@
 </main>
 
 <style>
+	main {
+		max-width: 40rem;
+		margin: auto;
+	}
 	form {
 		display: grid;
 		gap: 2rem;

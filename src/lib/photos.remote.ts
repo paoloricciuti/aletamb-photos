@@ -4,11 +4,16 @@ import { imageSize } from 'image-size';
 import { utapi } from '$lib/server/uploadthing';
 import { db } from '$lib/server/db';
 import { photos } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
 import { check_auth } from './utils';
 
 const page_size = 10;
+
+export const get_pages = query(async () => {
+	const photos_num = await db.select({ value: count() }).from(photos).get();
+	return Math.ceil((photos_num?.value ?? 0) / page_size);
+});
 
 export const get_photos = query(v.number(), async (page) => {
 	const page_photos = await db
