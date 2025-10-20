@@ -31,7 +31,7 @@
 			<li class="row">
 				<img style="view-transition-name: img-{photo.id}" src={photo.url} alt={photo.description} />
 				<a href={resolve('/admin/edit/[id]', { id: photo.id })}>
-					{photo.title}
+					{photo.title ?? '(Senza titolo)'}
 				</a>
 				<form
 					{...delete_photo.for(photo.id).enhance(async ({ submit }) => {

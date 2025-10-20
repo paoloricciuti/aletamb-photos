@@ -4,7 +4,7 @@
 
 	let { params } = $props();
 
-	let photo = $derived(await get_photo(params.id));
+	let photo = $derived(await get_photo({ id: params.id }));
 </script>
 
 <main>

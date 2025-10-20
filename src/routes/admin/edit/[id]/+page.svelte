@@ -7,7 +7,7 @@
 
 	let { params } = $props();
 
-	const photo = $derived(await get_photo(params.id));
+	const photo = $derived(await get_photo({ id: params.id, edit: true }));
 
 	function set_values() {
 		edit_photo.fields.title.set(photo.title ?? '');

@@ -31,13 +31,16 @@ export const get_all_photos = query(async () => {
 	return page_photos;
 });
 
-export const get_photo = query(v.string(), async (id) => {
-	const photo = await db.select().from(photos).where(eq(photos.id, id)).get();
-	if (photo == null || photo.title == null) {
-		redirect(302, '/');
-	}
-	return photo;
-});
+export const get_photo = query(
+	v.object({ id: v.string(), edit: v.optional(v.boolean()) }),
+	async ({ id, edit = false }) => {
+		const photo = await db.select().from(photos).where(eq(photos.id, id)).get();
+		if (photo == null || (!edit && photo.title == null)) {
+			redirect(302, '/');
+		}
+		return photo;
+	},
+);
 
 export const delete_photo = form(
 	v.object({ id: v.string(), key: v.string() }),
