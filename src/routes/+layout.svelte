@@ -28,7 +28,7 @@
 		><img style:height="48px" src={logo} alt="aletamb photos logo" /></a
 	>
 	<h1>aletamb photos</h1>
-	<a title="Home" data-sveltekit-reload href={resolve('/admin')}
+	<a title="Home" href={resolve('/admin')}
 		><svg height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
 			><path
 				fill="none"
