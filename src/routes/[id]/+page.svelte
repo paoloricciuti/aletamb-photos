@@ -1,10 +1,13 @@
 <script lang="ts">
 	import Polaroid from '$lib/components/Polaroid.svelte';
 	import { get_photo } from '$lib/photos.remote.js';
+	import { create_remote_and_notify } from '$lib/remote-notify.js';
 
 	let { params } = $props();
 
-	let photo = $derived(await get_photo({ id: params.id }));
+	const fn = create_remote_and_notify();
+
+	let photo = $derived(await fn(get_photo({ id: params.id })));
 </script>
 
 <main>

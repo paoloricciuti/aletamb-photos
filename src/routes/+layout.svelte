@@ -5,14 +5,34 @@
 	import logo from '$lib/assets/aletamb.svg';
 	import '../app.css';
 	import { resolve } from '$app/paths';
+	import { set_resolver } from '$lib/resolver-context';
+
 	let { children } = $props();
 
+	let resolver: () => void;
+	let should_wait = false;
+
+	set_resolver({
+		should_wait() {
+			should_wait = true;
+		},
+		resolver() {
+			resolver?.();
+		},
+	});
+
 	onNavigate(({ complete }) => {
+		const promise = new Promise<void>((res) => {
+			resolver = res;
+		});
 		return new Promise((res) => {
 			document.startViewTransition(async () => {
 				res();
 				await complete;
-				await new Promise((res) => setTimeout(res, 300)); // TODO fix this when fixed in sveltekit
+				if (should_wait) {
+					should_wait = false;
+					await promise;
+				}
 			});
 		});
 	});
