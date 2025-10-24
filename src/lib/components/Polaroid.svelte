@@ -57,11 +57,13 @@
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	}
 	.full {
-		margin: auto;
+		margin-bottom: auto;
+		margin-inline: auto;
 		position: absolute;
 		width: unset;
 		rotate: 0deg;
 		max-height: 90%;
+		inset: 0;
 	}
 
 	.photo-container {

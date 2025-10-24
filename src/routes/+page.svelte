@@ -3,15 +3,15 @@
 	import { page } from '$app/state';
 	import Polaroid from '$lib/components/Polaroid.svelte';
 	import { get_pages, get_photos } from '$lib/photos.remote.js';
-	import { create_remote_and_notify } from '$lib/remote-notify';
+	import { wait_settled } from '$lib/resolver-context';
 
-	const fn = create_remote_and_notify();
+	wait_settled();
 
 	const page_num = $derived(+(page.url.searchParams.get('page') ?? '0'));
 </script>
 
 <ul>
-	{#each await fn(get_photos(page_num)) as photo (photo.id)}
+	{#each await get_photos(page_num) as photo (photo.id)}
 		<li>
 			<a class="photos" href={resolve('/[id]', { id: photo.id })}>
 				<Polaroid
@@ -45,7 +45,7 @@
 
 	<span class="current">Pagina {page_num + 1} di {await get_pages()}</span>
 
-	{#if page_num + 1 < (await fn(get_pages()))}
+	{#if page_num + 1 < (await get_pages())}
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 		<a class="next" href="/?page={page_num + 1}" title="Pagina successiva"
 			><svg height="72" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"

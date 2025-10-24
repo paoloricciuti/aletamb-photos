@@ -1,37 +1,31 @@
 <script lang="ts">
-	import '@fontsource/cedarville-cursive';
 	import { onNavigate } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import favicon from '$lib/assets/aletamb.png';
 	import logo from '$lib/assets/aletamb.svg';
+	import '@fontsource/cedarville-cursive';
 	import '../app.css';
-	import { resolve } from '$app/paths';
-	import { set_resolver } from '$lib/resolver-context';
+	import { set_resolver } from '$lib/resolver-context.js';
 
 	let { children } = $props();
 
-	let resolver: () => void;
-	let should_wait = false;
+	let promise: Promise<void> | null = null;
 
 	set_resolver({
-		should_wait() {
-			should_wait = true;
-		},
-		resolver() {
-			resolver?.();
+		resolver(settled) {
+			promise = settled();
 		},
 	});
 
 	onNavigate(({ complete }) => {
-		const promise = new Promise<void>((res) => {
-			resolver = res;
-		});
 		return new Promise((res) => {
 			document.startViewTransition(async () => {
 				res();
 				await complete;
-				if (should_wait) {
-					should_wait = false;
-					await promise;
+				if (promise) {
+					await promise.then(() => {
+						promise = null;
+					});
 				}
 			});
 		});

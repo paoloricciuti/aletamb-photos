@@ -4,10 +4,12 @@
 	import Input from '$lib/components/Input.svelte';
 	import Issues from '$lib/components/Issues.svelte';
 	import { edit_photo, get_photo } from '$lib/photos.remote.js';
+	import { wait_settled } from '$lib/resolver-context.js';
 	import { untrack } from 'svelte';
 
 	let { params } = $props();
 
+	wait_settled();
 	const photo = $derived(await get_photo({ id: params.id, edit: true }));
 
 	function set_values() {

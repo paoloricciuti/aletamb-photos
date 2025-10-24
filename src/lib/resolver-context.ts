@@ -1,8 +1,12 @@
-import { createContext } from 'svelte';
+import { createContext, settled } from 'svelte';
 
 const [get_resolver, set_resolver] = createContext<{
-	should_wait: () => void;
-	resolver: () => void;
+	resolver: (settled: () => Promise<void>) => void;
 }>();
 
 export { get_resolver, set_resolver };
+
+export function wait_settled() {
+	const { resolver } = get_resolver();
+	resolver(settled);
+}
