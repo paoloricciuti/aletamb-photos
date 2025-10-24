@@ -1,11 +1,9 @@
 <script lang="ts">
 	import Polaroid from '$lib/components/Polaroid.svelte';
 	import { get_photo } from '$lib/photos.remote.js';
-	import { wait_settled } from '$lib/resolver-context';
 
 	let { params } = $props();
 
-	wait_settled();
 	let photo = $derived(await get_photo({ id: params.id }));
 </script>
 

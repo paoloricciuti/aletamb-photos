@@ -1,32 +1,31 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import favicon from '$lib/assets/aletamb.png';
 	import logo from '$lib/assets/aletamb.svg';
 	import '@fontsource/cedarville-cursive';
 	import '../app.css';
-	import { set_resolver } from '$lib/resolver-context.js';
 
 	let { children } = $props();
 
-	let promise: Promise<void> | null = null;
+	let resolver: (() => void) | null = null;
 
-	set_resolver({
-		resolver(settled) {
-			promise = settled();
-		},
+	$effect.pre(() => {
+		void page.url;
+		resolver?.();
+		resolver = null;
 	});
 
 	onNavigate(({ complete }) => {
+		const promise = new Promise<void>((res) => {
+			resolver = res;
+		});
 		return new Promise((res) => {
 			document.startViewTransition(async () => {
 				res();
 				await complete;
-				if (promise) {
-					await promise.then(() => {
-						promise = null;
-					});
-				}
+				await promise;
 			});
 		});
 	});

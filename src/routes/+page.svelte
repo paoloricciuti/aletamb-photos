@@ -3,9 +3,6 @@
 	import { page } from '$app/state';
 	import Polaroid from '$lib/components/Polaroid.svelte';
 	import { get_pages, get_photos } from '$lib/photos.remote.js';
-	import { wait_settled } from '$lib/resolver-context';
-
-	wait_settled();
 
 	const page_num = $derived(+(page.url.searchParams.get('page') ?? '0'));
 </script>
