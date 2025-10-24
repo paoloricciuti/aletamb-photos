@@ -6,7 +6,7 @@
 
 <ul>
 	<!-- eslint-disable-next-line svelte/require-each-key -->
-	{#each (form as unknown as RemoteForm<{ just_to_make_ts_shutup: string }, TOutput>).fields.allIssues() as error}
+	{#each form.fields.allIssues() as error}
 		<li>{error.message}</li>
 	{/each}
 </ul>
