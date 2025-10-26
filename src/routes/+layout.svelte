@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { page } from '$app/state';
 	import favicon from '$lib/assets/aletamb.png';
 	import logo from '$lib/assets/aletamb.svg';
 	import '@fontsource/cedarville-cursive';
@@ -9,23 +8,11 @@
 
 	let { children } = $props();
 
-	let resolver: (() => void) | null = null;
-
-	$effect.pre(() => {
-		void page.url;
-		resolver?.();
-		resolver = null;
-	});
-
 	onNavigate(({ complete }) => {
-		const promise = new Promise<void>((res) => {
-			resolver = res;
-		});
 		return new Promise((res) => {
 			document.startViewTransition(async () => {
 				res();
 				await complete;
-				await promise;
 			});
 		});
 	});
